@@ -1,0 +1,9 @@
+{% block title %}post detail{% endblock %}
+
+{% block content %}
+  <h1>post detail</h1>
+  <h2>{{ post.title }} by {{ post.author }}</h2>
+  <p>{{ post.description }}</p>
+  <hr>
+  <p>{{ post.publish }}</p>
+{% endblock %}
