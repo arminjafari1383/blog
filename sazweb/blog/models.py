@@ -53,4 +53,21 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name="comments",verbose_name="پست")
+    name = models.CharField(max_length=250,verbose_name="نام")
+    body = models.TextField(verbose_name="متن کامنت")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=False)
+    class Meta:
+        ordering = ['created']
+        indexes = [
+            models.Index(fields=['created'])
+        ]
+        verbose_name = "کامنت"
+        verbose_name_plural = "کامنت ها"
+    def __str__(self):
+        return f"{self.name}؛ {self.post}"
+

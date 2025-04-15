@@ -1,4 +1,6 @@
 from django import forms
+from .models import Comment
+
 
 class TicketForm(forms.Form):
     SUBJECT_CHOICES = (
@@ -11,3 +13,15 @@ class TicketForm(forms.Form):
     email = forms.EmailField()
     phone = forms.CharField(max_length=11,required=True)
     subject = forms.ChoiceField(choices = SUBJECT_CHOICES)
+
+class CommentForm(forms.ModelForm):
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name:
+            if len(name)<3:
+                raise forms.ValidationError("نام کوتاه است")
+            else:
+                return name
+    class Meta:
+        model = Comment
+        fields = ['name','body']

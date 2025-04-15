@@ -17,3 +17,10 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ['name','subject','phone']
+
+@admin.register(Comment)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['post','name','created','active']
+    list_filter = ['active','created','updated']
+    search_fields = ['name','body']
+    list_editable = ['active']

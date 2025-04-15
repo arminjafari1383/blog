@@ -4,13 +4,15 @@ from .models import *
 from .forms import *
 # from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.views.generic import ListView,DetailView
+from django.views.decorators.http import require_POST
 
 
 # Create your views here.
 
 
 def index(request):
-    return HttpResponse("index")
+
+    return render(request,"blog/index.html")
 
 # def post_list(request):
 #     posts = Post.published.all()
@@ -35,12 +37,16 @@ class PostListView(ListView):
     template_name = "blog/list.html"
 
 
-# def post_detail(request,id):
-#     post = get_object_or_404(Post,id=id,status = Post.Status.PUBLISHED)
-#     context = {
-#         'post':post,
-#     }
-#     return render(request,"blog/detail.html",context)
+def post_detail(request,pk):
+    post = get_object_or_404(Post,id=pk,status = Post.Status.PUBLISHED)
+    comments = post.comments.filter(active = True)
+    form = CommentForm()
+    context = {
+        'post':post,
+        'form':form,
+        'comments':comments
+    }
+    return render(request,"blog/detail.html",context)
 
 class PostDetailView(DetailView):
     model = Post
@@ -63,3 +69,19 @@ def ticket(request):
         form = TicketForm()
     
     return render(request, "forms/ticket.html", {'form': form})
+
+@require_POST
+def post_comment(request,post_id):
+    post = get_object_or_404(Post,id = post_id,status = Post.Status.PUBLISHED)
+    comment = None
+    form = CommentForm(data = request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    context = {
+        'post':post,
+        'form':form,
+        'comment':comment
+        }
+    return render(request,"forms/comment.html",context)
