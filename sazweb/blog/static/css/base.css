@@ -12,7 +12,10 @@ body {
 	margin: 0;
 	background-color: whitesmoke;
 }
-
+.cm-body{
+	border-radius: 40%;
+	height: 70px;
+}
 p {
 	margin: 0;
 	line-height: 1.6;

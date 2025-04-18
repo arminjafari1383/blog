@@ -85,3 +85,25 @@ def post_comment(request,post_id):
         'comment':comment
         }
     return render(request,"forms/comment.html",context)
+
+
+def post_search(request):
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(data=request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results1 = Post.published.filter(title__icontains = query)
+            results2 = Post.published.filter(description__icontains = query)
+            results = results1 ^ results2
+    else:
+        form = SearchForm()
+
+    context = {
+        'form': form,
+        'query': query,
+        'results': results
+    }
+    return render(request, 'blog/search.html', context)
