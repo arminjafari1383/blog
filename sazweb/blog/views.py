@@ -6,6 +6,7 @@ from .forms import *
 from django.views.generic import ListView,DetailView
 from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.contrib.postgres.search import SearchVector
 
 
 # Create your views here.
@@ -96,12 +97,11 @@ def post_search(request):
         form = SearchForm(data=request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Post.published.filter(Q(title__icontains = query) | Q(description__icontains = query))
-    else:
-        form = SearchForm()
+            results = Post.published.annotate(search = SearchVector('title','description','slug')).\
+                filter(search=query)
 
     context = {
-        'form': form,
+        # 'form': form,
         'query': query,
         'results': results
     }
