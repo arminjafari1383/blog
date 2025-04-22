@@ -10,6 +10,7 @@
         <a href="{{post.get_absolute_url}}">{{ post.title }}</a>
     </h3>
     <p> {{ post.description | markdown}}</p>
+    <img src="{{ post.images.first.image_file.url }}" alt="{{ post.images.first.title }}" style="width: 100%;">
     </li>
   {% endfor %}
 </ol>

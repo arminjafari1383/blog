@@ -8,6 +8,11 @@
   <hr>
   <p>{{ post.publish }}</p>
   <div>
+    {% for img in post.images.all %}
+         <img src="{{ img.image_file.url }}" alt="{{ img.title }}" style="width: 20%;">
+    {% endfor %}
+  </div>
+  <div>
   {% with comments.count as cm_count %}
   {{ cm_count }} comment{{cm_count|pluralize }}
   </div>
