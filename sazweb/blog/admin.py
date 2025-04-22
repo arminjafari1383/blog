@@ -2,6 +2,17 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 
+
+#Inlines
+class ImageInLine(admin.TabularInline):
+    model = Image
+    extra = 1
+
+class CommentInLine(admin.TabularInline):
+    model = Comment
+    extra = 1
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['title','author','publish','status']
@@ -13,6 +24,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug" : ['title']}
     list_editable = ['status']
     list_display_links = ['author']
+    inlines = [ImageInLine,CommentInLine]
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
