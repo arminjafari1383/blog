@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_resized import ResizedImageField
+from django.template.defaultfilters import slugify
 
 
 #Mangers
@@ -45,6 +46,12 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return reverse('blog:post_detail',args=[self.id])
+    
+    def save(self,*args,**kwargs):
+        if not self.args:
+            self.slug = slugify(self.title)
+        super().save(*args,**kwargs)
+
 
 class Ticket(models.Model):
     message = models.TextField(verbose_name="پیام")
