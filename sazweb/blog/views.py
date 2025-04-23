@@ -127,3 +127,10 @@ def create_post(request):
     else:
         form = CreatePostForm()
     return render(request,'forms/create_post.html',{'form':form})
+
+def delete_post(request,post_id):
+    post = get_object_or_404(Post,id = post_id)
+    if request.method == "POST":
+        post.delete()
+        return redirect('blog:profile')
+    return render(request,'forms/delete-post.html',{'post':post})
