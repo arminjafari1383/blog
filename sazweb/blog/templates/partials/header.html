@@ -2,4 +2,11 @@
     <input type="text" name="query" required placeholder="....کلمه مورد نظر را وارد کنید">
     <input type="submit" value="جستجو">
 </form>
+{% if request.user.is_authenticated %}
+<div>
+    <a href="#">{{ request.user.username }}</a>
+</div>
+{% else %}
+<a href="{% url 'blog:login' %}">ورود</a>
+{% endif %}
 <p><a href="{% url 'blog:profile' %}">پروفایل</a></p>

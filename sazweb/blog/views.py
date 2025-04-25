@@ -7,7 +7,8 @@ from django.views.generic import ListView,DetailView
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import TrigramSimilarity
-
+from django.contrib.auth import authenticate,login
+from django.contrib import messages
 
 # Create your views here.
 
@@ -134,3 +135,42 @@ def delete_post(request,post_id):
         post.delete()
         return redirect('blog:profile')
     return render(request,'forms/delete-post.html',{'post':post})
+
+def delete_image(request,image_id):
+    image = get_object_or_404(Image,id = image_id)
+    image.delete()
+    return redirect('blog:profile')
+
+def edit_post(request,post_id):
+    post = get_object_or_404(Post,id = post_id)
+    if request.method == "POST":
+        form = CreatePostForm(request.POST, request.FILES,instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            Image.objects.create(image_file = form.cleaned_data['image1'],post = post)
+            Image.objects.create(image_file = form.cleaned_data['image2'],post = post)
+            return redirect('blog:profile')
+    else:
+        form = CreatePostForm(instance=post)
+    return render(request,'forms/create_post.html',{'form':form,'post':post})
+
+def user_login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'You are now logged in.')
+                    return redirect('blog:profile')
+                else:
+                    messages.error(request, 'Your account is disabled.')
+            else:
+                messages.error(request, 'Invalid login credentials.')
+    else:
+        form = LoginForm()
+    return render(request, 'forms/login.html', {'form': form})
