@@ -4,7 +4,7 @@
 </form>
 {% if request.user.is_authenticated %}
 <div>
-    <a href="#">{{ request.user.username }}</a>
+    <a href="#">{{request.user..first_name|default:request.user.username }}</a>
 </div>
 {% else %}
 <a href="{% url 'blog:login' %}">ورود</a>
