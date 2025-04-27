@@ -1,31 +1,95 @@
-<div class="pagination">
-{% if page_obj.has_previous %}
-  <a href="?page={{ page_obj.previous_page_number }}">« Previous page</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination</title>
+    <style>
+        /* استایل برای بخش pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            font-family: Arial, sans-serif;
+        }
 
-  {% if page_obj.number > 3 %}
-    <a href="?page=1">1</a>
-    {% if page_obj.number > 4 %}
-      <span>...</span>
-    {% endif %}
-  {% endif %}
-{% endif %}
+        .pagination a {
+            margin: 0 5px;
+            padding: 8px 16px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-{% for num in page_obj.paginator.page_range %}
-  {% if page_obj.number == num %}
-    <a href="?page={{ num }}">{{ num }}</a>
-  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-    <a href="?page={{ num }}">{{ num }}</a>
-  {% endif %}
-{% endfor %}
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
 
-{% if page_obj.has_next %}
-  {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
-    <span>...</span>
-    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-  {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
-    <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-  {% endif %}
+        .pagination a.active {
+            background-color: #28a745;
+            font-weight: bold;
+        }
 
-  <a href="?page={{ page_obj.next_page_number }}">Next Page »</a>
-{% endif %}
-</div>
+        .pagination .dots {
+            margin: 0 5px;
+            font-size: 18px;
+        }
+
+        .pagination .page-link {
+            display: inline-block;
+            font-size: 16px;
+            text-align: center;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination .page-link.active {
+            background-color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">« صفحه قبلی</a>
+
+            {% if page_obj.number > 3 %}
+                <a href="?page=1" class="page-link">1</a>
+                {% if page_obj.number > 4 %}
+                    <span class="dots">...</span>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a href="?page={{ num }}" class="page-link active">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                <span class="dots">...</span>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">{{ page_obj.paginator.num_pages }}</a>
+            {% elif page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">{{ page_obj.paginator.num_pages }}</a>
+            {% endif %}
+
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link">صفحه بعدی »</a>
+        {% endif %}
+    </div>
+</body>
+</html>

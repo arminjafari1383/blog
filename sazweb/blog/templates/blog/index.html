@@ -1,10 +1,64 @@
 {% extends 'parent/base.html' %}
 {% load blog_tags %}
-{% block title %}post list{% endblock %}
+{% block title %}Post List{% endblock %}
+
 {% block content %}
-<h1>آمار</h1>
-<p>:تعداد پست{% total_posts %}</p>
-<p>تعداد کامتت:{% total_comments %}</p>
-<p>تاریخ آخرین پست ؛{% last_post_date %}</p>
-{% latest_posts 2%}
+<style>
+.stats-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.stats-container h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.stats-item {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.latest-posts {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.latest-posts h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.latest-posts ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.latest-posts li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #444;
+}
+</style>
+
+<div class="stats-container">
+  <h1>آمار</h1>
+  <p class="stats-item">تعداد پست‌ها: {% total_posts %}</p>
+  <p class="stats-item">تعداد کامنت‌ها: {% total_comments %}</p>
+  <p class="stats-item">تاریخ آخرین پست: {% last_post_date %}</p>
+
+  <div class="latest-posts">
+    <h2>آخرین پست‌ها</h2>
+    <ul>
+      {% latest_posts 2 %}
+    </ul>
+  </div>
+</div>
 {% endblock %}

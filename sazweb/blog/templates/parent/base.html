@@ -1,17 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blog|{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css'%}">
+    <meta name="description" content="A great blog to explore interesting topics and posts.">
+    <meta name="keywords" content="blog, technology, lifestyle, news">
+    <meta name="author" content="Your Name">
+    <title>Blog | {% block title %}{% endblock %}</title>
+
+    <!-- Add Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Link to CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+
     {% block head %} {% endblock %}
 </head>
-<body dir="ltr">
+<body dir="rtl"> <!-- Change to rtl for Persian language -->
     {% include 'partials/header.html' %}
     {% include 'partials/navigation.html' %}
-    {% block content %}{% endblock %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
     {% include 'partials/footer.html' %}
 </body>
 </html>

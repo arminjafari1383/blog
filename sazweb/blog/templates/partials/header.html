@@ -1,12 +1,82 @@
-<form method="get" action="{% url 'blog:post_search' %}">
-    <input type="text" name="query" required placeholder="....کلمه مورد نظر را وارد کنید">
-    <input type="submit" value="جستجو">
+{% load static %}
+<form method="get" action="{% url 'blog:post_search' %}" class="search-form">
+    <input type="text" name="query" required placeholder="....کلمه مورد نظر را وارد کنید" class="search-input">
+    <input type="submit" value="جستجو" class="search-submit">
 </form>
-{% if request.user.is_authenticated %}
-<div>
-    <a href="#">{{request.user..first_name|default:request.user.username }}</a>
+
+<div class="user-links">
+    {% if request.user.is_authenticated %}
+        <div class="user-info">
+            <a href="#" class="user-name">{{ request.user.first_name|default:request.user.username }}</a>
+        </div>
+    {% else %}
+        <a href="{% url 'blog:login' %}" class="login-link">ورود</a>
+    {% endif %}
+    <p><a href="{% url 'blog:profile' %}" class="profile-link">پروفایل</a></p>
 </div>
-{% else %}
-<a href="{% url 'blog:login' %}">ورود</a>
-{% endif %}
-<p><a href="{% url 'blog:profile' %}">پروفایل</a></p>
+
+<style>
+/* Form Styles */
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.search-submit {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-submit:hover {
+    background-color: #218838;
+}
+
+/* User links section */
+.user-links {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.user-info {
+    margin-right: 15px;
+}
+
+.user-name {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.user-name:hover {
+    color: #007bff;
+}
+
+.login-link, .profile-link {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+.login-link:hover, .profile-link:hover {
+    color: #0056b3;
+}
+</style>

@@ -1,34 +1,136 @@
 {% extends 'parent/base.html' %}
-{% block title %}post detail{% endblock %}
 {% load blog_tags %}
+{% block title %}Post Detail{% endblock %}
+
 {% block content %}
-  <h1>post detail</h1>
-  <h2>{{ post.title }} by {{ post.author }}</h2>
-  <p>{{ post.description |  markdown }}</p>
+<style>
+.post-detail-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.post-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+}
+
+.post-author {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.post-description {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.post-publish-date {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.post-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.post-image {
+  width: 20%;
+  border-radius: 8px;
+}
+
+.post-comments {
+  margin-top: 40px;
+}
+
+.comment {
+  background: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.comment-body {
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  font-size: 14px;
+  color: #555;
+  text-align: right;
+}
+
+.comment-form {
+  margin-top: 40px;
+}
+
+.btn-submit {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #0056b3;
+}
+</style>
+
+<div class="post-detail-container">
+  <h1 class="post-title">{{ post.title }}</h1>
+  <h3 class="post-author">نویسنده: {{ post.author }}</h3>
+
+  <div class="post-description">
+    {{ post.description|markdown }}
+  </div>
+
   <hr>
-  <p>{{ post.publish }}</p>
-  <div>
+
+  <p class="post-publish-date">تاریخ انتشار: {{ post.publish }}</p>
+
+  {% if post.images.all %}
+  <div class="post-images">
     {% for img in post.images.all %}
-         <img src="{{ img.image_file.url }}" alt="{{ img.title }}" style="width: 20%;">
+      <img src="{{ img.image_file.url }}" alt="{{ img.title }}" class="post-image">
     {% endfor %}
   </div>
-  <div>
-  {% with comments.count as cm_count %}
-  {{ cm_count }} comment{{cm_count|pluralize }}
+  {% endif %}
+
+  <div class="post-comments">
+    {% with comments.count as cm_count %}
+      <h3>{{ cm_count }} نظر{{ cm_count|pluralize }}</h3>
+
+      {% for cm in comments %}
+        <div class="comment">
+          <p class="comment-body">{{ cm.body|linebreaks }}</p>
+          <p class="comment-author">- {{ cm.name }}</p>
+        </div>
+      {% empty %}
+        <p>!کامنتی وجود ندارد</p>
+      {% endfor %}
+    {% endwith %}
   </div>
-  <div>
-  {% for cm in comments %}
-    {{ cm.body|linebreaks }}
-    <br>
-    {{ cm.name }}
-  {% empty %}
-     !کامنتی وجود ندارد
-  {% endfor %}
+
+  <div class="comment-form">
+    <h3>افزودن کامنت جدید</h3>
+    <form method="post" action="{% url 'blog:post_comment' post.id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-submit">ثبت نظر</button>
+    </form>
   </div>
-  {% endwith %}
-  <form method="post" action="{% url 'blog:post_comment' post.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="افزودن کامنت"> 
-  </form>
+</div>
 {% endblock %}

@@ -1,13 +1,66 @@
 {% extends 'parent/base.html' %}
-{% block title %}post comment{% endblock %}
+
+{% block title %}ثبت کامنت{% endblock %}
+
 {% block content %}
+<style>
+.comment-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.comment-form input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.comment-form input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+</style>
+
+<div class="comment-container">
   {% if comment %}
-  کامنت شما ثبت شد
-  <a href="{{ post.get_absolute_url }}">بازگشت به پست</a>
+    <div class="success-message">
+      کامنت شما با موفقیت ثبت شد!
+      <br>
+      <a href="{{ post.get_absolute_url }}">بازگشت به پست</a>
+    </div>
   {% endif %}
-  <form method="post" action="{% url 'blog:post_comment' post.id %}">
+
+  <form method="post" action="{% url 'blog:post_comment' post.id %}" class="comment-form">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="افزودن کامنت"> 
+    <input type="submit" value="افزودن کامنت">
   </form>
+</div>
 {% endblock %}

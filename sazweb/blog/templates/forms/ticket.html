@@ -1,14 +1,85 @@
 {% extends 'parent/base.html' %}
-{% block title %}ticket form{% endblock %}
+
+{% block title %}فرم ارسال تیکت{% endblock %}
+
 {% block content %}
+<style>
+.ticket-form-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.ticket-form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-form-container label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.ticket-form-container input[type="text"],
+.ticket-form-container input[type="email"],
+.ticket-form-container textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.ticket-form-container input[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.ticket-form-container input[type="submit"]:hover {
+  background-color: #218838;
+}
+
+.ticket-form-container .error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: -12px;
+  margin-bottom: 16px;
+}
+</style>
+
+<div class="ticket-form-container">
+  <h2>ارسال تیکت</h2>
+  
   <form method="post">
     {% csrf_token %}
-      {% for field in form %}
+    
+    {% for field in form %}
+      <div class="form-group">
         {{ field.label_tag }}
         {{ field }}
-        {{ field.errors }}
-      {% endfor %}
-    <input type="submit",value="ثبت تیکت">
-
+        {% if field.errors %}
+          <div class="error-message">
+            {% for error in field.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    
+    <input type="submit" value="ثبت تیکت">
   </form>
+</div>
+
 {% endblock %}
