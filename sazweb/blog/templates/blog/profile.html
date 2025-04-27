@@ -48,6 +48,13 @@
                 خروج
             </button>
         </form>
+        <form action="{% url 'blog:password_change' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" style="background: none; border: none; color: blue; text-decoration: underline; cursor: pointer;">
+               تغییر پسورد
+            </button>
+        </form>
+
     </div>
 
 </div>
