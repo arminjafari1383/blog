@@ -11,6 +11,7 @@
         </div>
     {% else %}
         <a href="{% url 'blog:login' %}" class="login-link">ورود</a>
+        <a href="{% url 'blog:register' %}" class="login-link">ثبت نام</a>
     {% endif %}
     <p><a href="{% url 'blog:profile' %}" class="profile-link">پروفایل</a></p>
 </div>
